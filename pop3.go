@@ -64,9 +64,18 @@ func (c *Client) Cmd(format string, args ...interface{}) (string, error) {
     line, _, err := c.bin.ReadLine()
     if err != nil { return "", err }
     l := string(line)
+
+    if len(l) < 3 {
+        return "", errors.New("response incorrect")
+    }
+
     if l[0:3] != "+OK" {
+        if len(l) < 5 {
+            return "", errors.New("response incorrect")
+        }
         err = errors.New(l[5:])
     }
+
     if len(l) >= 4 {
         return l[4:], err
     }
