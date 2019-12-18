@@ -57,7 +57,7 @@ func TestBasic (t *testing.T) {
 	}
 
 	if err = c.User("uname"); err != nil {
-		t.Fatal("User failed: %s", err)
+		t.Fatalf("User failed: %s", err)
 	}
 
 	if err = c.Pass("password1"); err == nil {
@@ -65,11 +65,11 @@ func TestBasic (t *testing.T) {
 	}
 
 	if err = c.Auth("uname", "password2"); err != nil {
-		t.Fatal("Auth failed: %s", err)
+		t.Fatalf("Auth failed: %s", err)
 	}
 
 	if err = c.Noop(); err != nil {
-		t.Fatal("Noop failed: %s", err)
+		t.Fatalf("Noop failed: %s", err)
 	}
 
 	bcmdbuf.Flush()
