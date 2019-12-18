@@ -56,11 +56,11 @@ func TestBasic (t *testing.T) {
 		t.Fatalf("NewClient failed: %s", err)
 	}
 
-	if err = c.User("uname"); err != nil {
+	if err = c.USER("uname"); err != nil {
 		t.Fatalf("User failed: %s", err)
 	}
 
-	if err = c.Pass("password1"); err == nil {
+	if err = c.PASS("password1"); err == nil {
 		t.Fatal("Pass succeeded inappropriately")
 	}
 
@@ -68,7 +68,7 @@ func TestBasic (t *testing.T) {
 		t.Fatalf("Auth failed: %s", err)
 	}
 
-	if err = c.Noop(); err != nil {
+	if err = c.NOOP(); err != nil {
 		t.Fatalf("Noop failed: %s", err)
 	}
 

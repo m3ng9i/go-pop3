@@ -88,18 +88,18 @@ func (c *Client) ReadLines() (lines []string, err error) {
 	return
 }
 
-// User sends the given username to the server. Generally, there is no reason
+// USER sends the given username to the server. Generally, there is no reason
 // not to use the Auth convenience method.
-func (c *Client) User(username string) (err error) {
+func (c *Client) USER(username string) (err error) {
 	_, err = c.Cmd("USER %s\r\n", username)
 	return
 }
 
-// Pass sends the given password to the server. The password is sent
+// PASS sends the given password to the server. The password is sent
 // unencrypted unless the connection is already secured by TLS (via DialTLS or
 // some other mechanism). Generally, there is no reason not to use the Auth
 // convenience method.
-func (c *Client) Pass(password string) (err error) {
+func (c *Client) PASS(password string) (err error) {
 	_, err = c.Cmd("PASS %s\r\n", password)
 	return
 }
@@ -107,20 +107,20 @@ func (c *Client) Pass(password string) (err error) {
 // Auth sends the given username and password to the server, calling the User
 // and Pass methods as appropriate.
 func (c *Client) Auth(username, password string) (err error) {
-	err = c.User(username)
+	err = c.USER(username)
 	if err != nil {
 		return
 	}
-	err = c.Pass(password)
+	err = c.PASS(password)
 	return
 }
 
-// Stat retrieves a drop listing for the current maildrop, consisting of the
+// STAT retrieves a drop listing for the current maildrop, consisting of the
 // number of messages and the total size (in octets) of the maildrop.
 // Information provided besides the number of messages and the size of the
 // maildrop is ignored. In the event of an error, all returned numeric values
 // will be 0.
-func (c *Client) Stat() (count, size int, err error) {
+func (c *Client) STAT() (count, size int, err error) {
 	l, err := c.Cmd("STAT\r\n")
 	if err != nil {
 		return 0, 0, err
@@ -137,10 +137,10 @@ func (c *Client) Stat() (count, size int, err error) {
 	return
 }
 
-// List returns the size of the given message, if it exists. If the message
+// LIST returns the size of the given message, if it exists. If the message
 // does not exist, or another error is encountered, the returned size will be
 // 0.
-func (c *Client) List(msg int) (size int, err error) {
+func (c *Client) LIST(msg int) (size int, err error) {
 	l, err := c.Cmd("LIST %d\r\n", msg)
 	if err != nil {
 		return 0, err
@@ -181,9 +181,9 @@ func (c *Client) ListAll() (msgs []int, sizes []int, err error) {
 	return
 }
 
-// Retr downloads and returns the given message. The lines are separated by LF,
+// RETR downloads and returns the given message. The lines are separated by LF,
 // whatever the server sent.
-func (c *Client) Retr(msg int) (text string, err error) {
+func (c *Client) RETR(msg int) (text string, err error) {
 	_, err = c.Cmd("RETR %d\r\n", msg)
 	if err != nil {
 		return "", err
@@ -193,15 +193,15 @@ func (c *Client) Retr(msg int) (text string, err error) {
 	return
 }
 
-// Dele marks the given message as deleted.
-func (c *Client) Dele(msg int) (err error) {
+// DELE marks the given message as deleted.
+func (c *Client) DELE(msg int) (err error) {
 	_, err = c.Cmd("DELE %d\r\n", msg)
 	return
 }
 
-// Noop does nothing, but will prolong the end of the connection if the server
+// NOOP does nothing, but will prolong the end of the connection if the server
 // has a timeout set.
-func (c *Client) Noop() (err error) {
+func (c *Client) NOOP() (err error) {
 	_, err = c.Cmd("NOOP\r\n")
 	return
 }
@@ -212,8 +212,8 @@ func (c *Client) Rset() (err error) {
 	return
 }
 
-// Quit sends the QUIT message to the POP3 server and closes the connection.
-func (c *Client) Quit() error {
+// QUIT sends the QUIT message to the POP3 server and closes the connection.
+func (c *Client) QUIT() error {
 	_, err := c.Cmd("QUIT\r\n")
 	if err != nil {
 		return err
