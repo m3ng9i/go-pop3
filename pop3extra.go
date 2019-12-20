@@ -103,18 +103,18 @@ func (c *Client) GetMail(msg int) (email parsemail.Email, err error) {
 type MailItem struct {
     parsemail.Email
     Size    int
-    msgNum  int // message number
+    MsgNum  int // message number
 }
 
 
 // Get basic mail info by message number. In the return value of email, not all fields are valid.
 func (c *Client) GetInfo(msg int) (email parsemail.Email, err error) {
-    text, err := c.TOP(msg, 80)
+    text, err := c.TOP(msg, 120)
     if err != nil {
         return
     }
 
-    email, err = parsemail.Parse(strings.NewReader(text))
+    email, err = parsemail.ParseHeader(strings.NewReader(text))
     return
 }
 
@@ -136,7 +136,7 @@ func (c *Client) GetList(n int) (list []MailItem, err error) {
     for i := num - 1; i >= 0; i-- {
         var item = MailItem {
             Size    : sizes[i],
-            msgNum  : msgs[i],
+            MsgNum  : msgs[i],
         }
 
         list = append(list, item)
@@ -148,7 +148,7 @@ func (c *Client) GetList(n int) (list []MailItem, err error) {
     }
 
     for i := 0; i < len(list); i++ {
-        email, e := c.GetInfo(list[i].msgNum)
+        email, e := c.GetInfo(list[i].MsgNum)
         if e != nil {
             err = e
             return
