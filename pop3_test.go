@@ -56,20 +56,20 @@ func TestBasic (t *testing.T) {
 		t.Fatalf("NewClient failed: %s", err)
 	}
 
-	if err = c.User("uname"); err != nil {
-		t.Fatal("User failed: %s", err)
+	if err = c.USER("uname"); err != nil {
+		t.Fatalf("User failed: %s", err)
 	}
 
-	if err = c.Pass("password1"); err == nil {
+	if err = c.PASS("password1"); err == nil {
 		t.Fatal("Pass succeeded inappropriately")
 	}
 
 	if err = c.Auth("uname", "password2"); err != nil {
-		t.Fatal("Auth failed: %s", err)
+		t.Fatalf("Auth failed: %s", err)
 	}
 
-	if err = c.Noop(); err != nil {
-		t.Fatal("Noop failed: %s", err)
+	if err = c.NOOP(); err != nil {
+		t.Fatalf("Noop failed: %s", err)
 	}
 
 	bcmdbuf.Flush()
